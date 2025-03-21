@@ -1,0 +1,88 @@
+QMainWindow {
+    background-color: #f9f9f9;
+}
+
+QLabel {
+    color: #2b8c8c;
+}
+
+/* Boutons globaux */
+QPushButton {
+    background-color: #f1f1f1;
+    border: 2px solid #2b8c8c;
+    border-radius: 10px;
+    padding: 20px; /* Augmenter le padding pour des boutons plus grands */
+    color: #2b8c8c;
+
+}
+
+QPushButton:hover {
+    background-color: #d1e7e7;
+}
+
+QPushButton:pressed {
+    background-color: #b0d6d6;
+}
+
+/* Style spécifique pour les boutons de la page d'accueil */
+#homeButton {
+    border: 3px solid #2196F3;
+    border-radius: 15px;
+    color: #2196F3;
+    min-width: 400px; /* Largeur minimale pour les boutons d'accueil */
+    min-height: 600px; /* Hauteur minimale pour les boutons d'accueil */
+}
+
+#homeButton:hover {
+    background-color: #bbdefb; /* Couleur plus claire au survol */
+}
+
+#homeButton:pressed {
+    background-color: #90caf9; /* Couleur lors du clic */
+}
+
+/* Titres de section */
+QLabel#headerTitle {
+    font-weight: bold;
+    margin: 20px;
+    color: #2b8c8c;
+}
+
+QLabel#helpText {
+    color: gray;
+    margin-bottom: 10px;
+}
+
+/* Style pour les boutons de dons */
+#donButton {
+    background-color: #e8f8f8;
+    border: 2px solid #2196F3;
+    border-radius: 10px;
+    color: #2196F3;
+    min-height: 60px;
+}
+
+#donButton:hover {
+    background-color: #d1f1f1;
+}
+
+#donButton:pressed {
+    background-color: #a8e4e4;
+}
+
+/* Bouton retour */
+#backButton {
+    background-color: #f9f9f9;
+    border: 2px solid #2b8c8c;
+    border-radius: 10px;
+    color: #2b8c8c;
+    min-height: 50px;
+}
+
+#backButton:hover {
+    background-color: #e0f7f7;
+}
+
+#backButton:pressed {
+    background-color: #b0d6d6;
+}
