@@ -30,16 +30,16 @@ class HomePage(QWidget):
         buttons_layout = QHBoxLayout()
 
         buttons = [
-            {"key": "adherents", "help_key": "adherents_help", "icon": "images/adherents_icon.png", "handler": None, "extra_text": "coming_soon"},
-            {"key": "mosque", "help_key": "mosque_help", "icon": "images/mosquee_icon.png", "handler": self.handle_mosque},
-            {"key": "works", "help_key": "works_help", "icon": "images/travaux_icon.png", "handler": self.handle_works},
-            {"key": "ramadan", "help_key": "ramadan_help", "icon": "images/ramadan_icon.png", "handler": self.handle_ramadan},
+            {"key": "adherents", "help_key": "adherents_help", "icon": "images/adhesion.png", "handler": None, "extra_text": "coming_soon"},
+            {"key": "mosque", "help_key": "mosque_help", "icon": "images/don.webp", "handler": self.handle_mosque},
+            {"key": "works", "help_key": "works_help", "icon": "images/tr.png", "handler": self.handle_works},
+            {"key": "ramadan", "help_key": "ramadan_help", "icon": "images/ramadan.png", "handler": self.handle_ramadan},
         ]
         icon_sizes = {
-            "adherents": (350, 350),  # Plus grand
-            "mosque": (350, 350),  # Plus grand
-            "works": (350, 350),  # Réduit
-            "ramadan": (350, 350)  # Réduit
+            "adherents": (200, 200),  # Plus grand
+            "mosque": (200, 200),  # Plus grand
+            "works": (200, 200),  # Réduit
+            "ramadan": (200, 200)  # Réduit
         }
         self.buttons = []
         for button_data in buttons:

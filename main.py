@@ -12,7 +12,7 @@ from work_page import WorksPage
 from otheramount_page import OtherAmountPage
 from payment_page import PaymentPage
 from splash_page import SplashPage
-from home_page import HomePage  # Importez la nouvelle classe
+from home_page import HomePage  
 
 
 class MainApp(QMainWindow):

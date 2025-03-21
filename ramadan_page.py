@@ -18,45 +18,47 @@ class RamadanPage(QWidget):
         self.pages.addWidget(self.dons_page)
 
     def setup_ui(self):
-        # Layout principal
         layout = QVBoxLayout()
 
-        # Titre
+        # Titre (agrandi)
         self.title = QLabel(
             self.translations.get(self.current_language, {}).get("ramadan_title", "Dons pour le Ramadan")
         )
         self.title.setAlignment(Qt.AlignTop | Qt.AlignHCenter)
-        self.title.setFont(QFont("Arial", 50, QFont.Bold))
+        self.title.setFont(QFont("Arial", 80, QFont.Bold))  # Titre agrandi à 80
 
-        # Bouton "Faire une Sadaqa pour l'Iftar"
+        # Bouton "Faire une Sadaqa pour l'Iftar" (agrandi)
         self.sadaqa_button = QPushButton(
             self.translations.get(self.current_language, {}).get("sadaqa_button", "Faire une Sadaqa pour l'Iftar")
         )
-        self.sadaqa_button.setFont(QFont("Arial", 16))
-        self.sadaqa_button.setFixedSize(400, 100)
+        self.sadaqa_button.setFont(QFont("Arial", 50))
+        self.sadaqa_button.setFixedSize(900, 250)
         self.sadaqa_button.clicked.connect(self.go_to_sadaqa_page)
 
-        # Bouton "Payer la Zakat al-Fitr (7 €)"
+        # Bouton "Payer la Zakat al-Fitr (7 €)" (agrandi)
         self.zakat_button = QPushButton(
             self.translations.get(self.current_language, {}).get("zakat_button", "Payer la Zakat al-Fitr (7 €)")
         )
-        self.zakat_button.setObjectName("zakatButton")
-        self.zakat_button.setFixedSize(400, 100)
+        self.zakat_button.setFont(QFont("Arial", 50))
+        self.zakat_button.setFixedSize(900, 250)
         self.zakat_button.clicked.connect(self.handle_zakat)
 
-        # Bouton retour
+        # Bouton retour (agrandi)
         self.back_button = QPushButton(
             self.translations.get(self.current_language, {}).get("back", "Retour")
         )
-        self.back_button.setObjectName("backButton")
-        self.back_button.setFixedSize(200, 50)
+        self.back_button.setFont(QFont("Arial", 40))
+        self.back_button.setFixedSize(600, 120)
         self.back_button.clicked.connect(self.return_to_home)
 
-        # Ajouter les widgets au layout
         layout.addWidget(self.title)
+        layout.addSpacing(30)
         layout.addWidget(self.sadaqa_button, alignment=Qt.AlignCenter)
+        layout.addSpacing(20)
         layout.addWidget(self.zakat_button, alignment=Qt.AlignCenter)
+        layout.addStretch()
         layout.addWidget(self.back_button, alignment=Qt.AlignBottom | Qt.AlignHCenter)
+        layout.addSpacing(20)
 
         self.setLayout(layout)
 
