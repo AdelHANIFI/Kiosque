@@ -8,3 +8,8 @@ From https://github.com/AdelHANIFI/Kiosque
  * branch            main       -> FETCH_HEAD
 Already up to date.
 QPixmap::scaled: Pixmap is a null pixmap
+[main 1924476] mise à jour automatique 2025-03622 18:57:55
+ 1 file changed, 2 insertions(+)
+fatal: unable to access 'https://github.com/AdelHANIFI/Kiosque.git/': Could not resolve host: github.com
+fatal: unable to access 'https://github.com/AdelHANIFI/Kiosque.git/': Could not resolve host: github.com
+QPixmap::scaled: Pixmap is a null pixmap
