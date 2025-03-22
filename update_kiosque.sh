@@ -9,6 +9,6 @@ git push origin main
 
 git pull origin main
 
-pkill -f main.py 
+sudo pkill -f main.py 
 python main.py &
 
