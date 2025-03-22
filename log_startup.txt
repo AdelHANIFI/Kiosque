@@ -1,9 +1,1 @@
-[main 738dd31] mise à jour automatique 2025-03622 09:46:22
- 1 file changed, 4 insertions(+)
-To https://github.com/AdelHANIFI/Kiosque.git
-   77d67bc..738dd31  main -> main
-From https://github.com/AdelHANIFI/Kiosque
- * branch            main       -> FETCH_HEAD
-Already up to date.
-QPixmap::scaled: Pixmap is a null pixmap
-This plugin does not support propagateSizeHints()
+
