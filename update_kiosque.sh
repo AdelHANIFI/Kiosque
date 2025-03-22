@@ -1,6 +1,9 @@
 #!/bin/bash
 
 sleep 30
+export DISPLAY=:0.0
+export XAUTHORITY=/home/mosqueePau/.Xauthority
+
 
 cd /home/mosqueePau/Desktop/Kiosque 
 
