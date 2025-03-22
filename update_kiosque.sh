@@ -1,3 +1,7 @@
+#!/bin/bash
+
+sleep 30
+
 cd /home/mosqueePau/Desktop/Kiosque 
 
 . myenv/bin/activate
