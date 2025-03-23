@@ -9,7 +9,11 @@ import sys
 import json
 import os 
 
-
+def load_terminal_id():
+    config_path = os.path.join(os.path.dirname(__file__), "terminal_config.json")
+    with open (config_path,"r") as f :
+        data = json.load(f)
+        data.get("terminal_id")
 class PaymentPage(QWidget):
     API_KEY = "sup_sk_YkWjlUS5edcb0LAVsObRwsJXJu9dMyH6o"  # Clé API SumUp
     TERMINAL_ID = load_terminal_id() # ID du terminal
@@ -71,11 +75,7 @@ class PaymentPage(QWidget):
 
         self.setLayout(layout)
        
-    def load_terminal_id():
-            config_path = os.path.join(os.path.dirname(__file__), "terminal_config.json")
-            with open (config_path,"r") as f :
-                    data = json.load(f)
-                    return data.get("terminal_id")
+
     def initiate_payment(self, amount, donation_type):
         """Initie le paiement sur le terminal SumUp."""
         if self.payment_pending:
