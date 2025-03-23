@@ -3,7 +3,7 @@
 sleep 30
 export DISPLAY=:0.0
 export XAUTHORITY=/home/mosqueePau/.Xauthority
-
+git config --global --add safe.directory "/home/mosqueePau/Desktop/Kiosque"
 
 cd /home/mosqueePau/Desktop/Kiosque 
 
