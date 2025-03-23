@@ -31,7 +31,7 @@ class HomePage(QWidget):
 
         buttons = [
             {"key": "adherents", "help_key": "adherents_help", "icon": "images/adhesion.png", "handler": None, "extra_text": "coming_soon"},
-            {"key": "mosque", "help_key": "mosque_help", "icon": "images/don.webp", "handler": self.handle_mosque},
+            {"key": "mosque", "help_key": "mosque_help", "icon": "images/don.png", "handler": self.handle_mosque},
             {"key": "works", "help_key": "works_help", "icon": "images/tr.png", "handler": self.handle_works},
             {"key": "ramadan", "help_key": "ramadan_help", "icon": "images/ramadan.png", "handler": self.handle_ramadan},
         ]
