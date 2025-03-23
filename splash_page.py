@@ -27,13 +27,13 @@ class SplashPage(QWidget):
 
         # Label agrandi clairement
         self.lang_label = QLabel(self.translations.get(self.current_language, {}).get("language_label", "Langue:"))
-        self.lang_label.setFont(QFont("Arial", 40))
+        self.lang_label.setFont(QFont("Arial", 36))
 
         # ComboBox agrandi clairement
         self.language_selector = QComboBox()
         self.language_selector.setFont(QFont("Arial", 36))
-        self.language_selector.setFixedHeight(100)
-        self.language_selector.setMinimumWidth(300)
+        self.language_selector.setFixedHeight(75)
+        self.language_selector.setMinimumWidth(200)
         self.language_selector.addItems(["Français", "English", "العربية"])
         self.language_selector.currentIndexChanged.connect(self.change_language)
 
