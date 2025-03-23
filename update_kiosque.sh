@@ -7,6 +7,8 @@ export XAUTHORITY=/home/mosqueePau/.Xauthority
 
 cd /home/mosqueePau/Desktop/Kiosque 
 
+git remote set-url origin git@github.com:AdelHANIFI/Kiosque.git
+
 . myenv/bin/activate
 
 git add .
