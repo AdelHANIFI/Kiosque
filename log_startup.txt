@@ -1,23 +1,2 @@
 
-On branch main
-Your branch is up to date with 'origin/main'.
 
-nothing to commit, working tree clean
-Everything up-to-date
-From https://github.com/AdelHANIFI/Kiosque
- * branch            main       -> FETCH_HEAD
-Already up to date.
-QPixmap::scaled: Pixmap is a null pixmap
-[main 1924476] mise à jour automatique 2025-03622 18:57:55
- 1 file changed, 2 insertions(+)
-fatal: unable to access 'https://github.com/AdelHANIFI/Kiosque.git/': Could not resolve host: github.com
-fatal: unable to access 'https://github.com/AdelHANIFI/Kiosque.git/': Could not resolve host: github.com
-QPixmap::scaled: Pixmap is a null pixmap
-[main de25387] mise à jour automatique 2025-03622 22:03:31
- 1 file changed, 5 insertions(+)
-To https://github.com/AdelHANIFI/Kiosque.git
-   2fb13ab..de25387  main -> main
-From https://github.com/AdelHANIFI/Kiosque
- * branch            main       -> FETCH_HEAD
-Already up to date.
-QPixmap::scaled: Pixmap is a null pixmap
