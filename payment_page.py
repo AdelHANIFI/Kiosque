@@ -6,10 +6,13 @@ import time
 import uuid
 from datetime import datetime, timezone
 import sys
+import json
+import os 
+
 
 class PaymentPage(QWidget):
     API_KEY = "sup_sk_YkWjlUS5edcb0LAVsObRwsJXJu9dMyH6o"  # Clé API SumUp
-    TERMINAL_ID = "0af00839-2a15-413d-9c8e-584a5e58a72c"  # ID du terminal
+    TERMINAL_ID = load_terminal_id() # ID du terminal
     LOG_FILE = "transactions_log.txt"  # Fichier où les transactions seront enregistrées
 
     
@@ -68,7 +71,11 @@ class PaymentPage(QWidget):
 
         self.setLayout(layout)
        
-
+    def load_terminal_id():
+            config_path = os.path.join(os.path.dirname(__file__), "terminal_config.json")
+            with open (config_path,"r") as f :
+                    data = json.load(f)
+                    return data.get("terminal_id")
     def initiate_payment(self, amount, donation_type):
         """Initie le paiement sur le terminal SumUp."""
         if self.payment_pending:
