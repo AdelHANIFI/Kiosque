@@ -3,11 +3,11 @@
 sleep 30
 export DISPLAY=:0.0
 export XAUTHORITY=/home/mosqueePau/.Xauthority
-
-
+git config --global --add safe.directory "/home/mosqueePau/Desktop/Kiosque"
+git config --global credential.helper store 
 cd /home/mosqueePau/Desktop/Kiosque 
 
-git remote set-url origin git@github.com:AdelHANIFI/Kiosque.git
+
 
 . myenv/bin/activate
 
