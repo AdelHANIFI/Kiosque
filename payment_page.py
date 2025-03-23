@@ -90,7 +90,8 @@ class PaymentPage(QWidget):
         }
         description = descriptions.get(donation_type, 'Don pour la mosquée')
 
-        url = f"https://api.sumup.com/v0.1/terminals/{self.TERMINAL_ID}/checkout"
+        #url = f"https://api.sumup.com/v0.1/terminals/{self.TERMINAL_ID}/checkout"
+        url = f"https://api.sumup.com/v0.1/merchants/MFT77XNQ/readers/{self.TERMINAL_ID}/checkout"
         headers = {"Authorization": f"Bearer {self.API_KEY}", "Content-Type": "application/json"}
 
         self.initiated_time = datetime.now(timezone.utc)  # Heure du paiement en UTC
