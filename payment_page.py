@@ -9,11 +9,14 @@ import sys
 import json
 import os 
 
+
+
 def load_terminal_id():
     config_path = os.path.join(os.path.dirname(__file__), "terminal_config.json")
-    with open (config_path,"r") as f :
+    with open(config_path, "r") as f:
         data = json.load(f)
-        data.get("terminal_id")
+        return data.get("terminal_id")  # ← Il manquait ce return
+
 class PaymentPage(QWidget):
     API_KEY = "sup_sk_YkWjlUS5edcb0LAVsObRwsJXJu9dMyH6o"  # Clé API SumUp
     TERMINAL_ID = load_terminal_id() # ID du terminal
@@ -327,7 +330,7 @@ class PaymentPage(QWidget):
         self.back_button.setText("Retour")
         layout.addWidget(self.back_button)
 
-        print("🔄 Page réinitialisée !")
+        print(" Page réinitialisée !")
 
 
     def return_to_home(self):
