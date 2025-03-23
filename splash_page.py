@@ -20,20 +20,20 @@ class SplashPage(QWidget):
         top_layout = QHBoxLayout()
         top_layout.setContentsMargins(20, 20, 20, 20)
 
-        # Icône tactile en haut à gauche
-        self.touch_label = QLabel()
-        touch_pixmap = QPixmap("images/tactile_icon.png")
-        touch_pixmap = touch_pixmap.scaled(100, 100, Qt.KeepAspectRatio, Qt.SmoothTransformation)
-        self.touch_label.setPixmap(touch_pixmap)
-        self.touch_label.setAlignment(Qt.AlignLeft | Qt.AlignTop)
-        top_layout.addWidget(self.touch_label)
-
-        # Sélecteur de langue
+        # Sélecteur de langue (version tactile agrandie)
         lang_layout = QHBoxLayout()
-        self.lang_label = QLabel(self.translations.get(self.current_language, {}).get("language_label", "Langue:"))
-        self.lang_label.setFont(QFont("Arial", 14))
 
+
+
+        # Label agrandi clairement
+        self.lang_label = QLabel(self.translations.get(self.current_language, {}).get("language_label", "Langue:"))
+        self.lang_label.setFont(QFont("Arial", 40))
+
+        # ComboBox agrandi clairement
         self.language_selector = QComboBox()
+        self.language_selector.setFont(QFont("Arial", 36))
+        self.language_selector.setFixedHeight(100)
+        self.language_selector.setMinimumWidth(300)
         self.language_selector.addItems(["Français", "English", "العربية"])
         self.language_selector.currentIndexChanged.connect(self.change_language)
 
@@ -41,9 +41,27 @@ class SplashPage(QWidget):
         lang_layout.addWidget(self.language_selector)
         lang_layout.addStretch()
 
-        top_layout.addLayout(lang_layout)
-        layout.addLayout(top_layout)
+        # Ajout du logo tactile en haut à droite
+        top_logo_layout = QHBoxLayout()
 
+        tactile_logo = QLabel()
+        pixmap = QPixmap("images/tactile.png")  # Placez ici votre image tactile.png dans le dossier 'images'
+        pixmap = pixmap.scaled(100, 100, Qt.KeepAspectRatio, Qt.SmoothTransformation)
+        tactile_logo.setPixmap(pixmap)
+        #placer le logo tactile en haut à droite avec une marge de 20 pixels
+        tactile_logo.setAlignment(Qt.AlignRight | Qt.AlignTop)
+        tactile_logo.setContentsMargins(0, 60, 40, 0)
+        
+
+        top_logo_layout.addStretch()
+        top_logo_layout.addWidget(tactile_logo)
+
+        # Layout final combiné (langue à gauche, logo à droite)
+        final_top_layout = QHBoxLayout()
+        final_top_layout.addLayout(lang_layout)
+        final_top_layout.addLayout(top_logo_layout)
+
+        layout.addLayout(final_top_layout)
         # Titre
         self.title_label = QLabel(self.translations.get(self.current_language, {}).get("splash_title", "Borne de Paiement"))
         self.title_label.setFont(QFont("Arial", 96, QFont.Bold))
@@ -88,6 +106,6 @@ class SplashPage(QWidget):
 
     def mousePressEvent(self, event):
         if self.parent():
-            self.parent().setCurrentIndex(1)
+            self.parent().setCurrentIndex(3)
 
   

@@ -126,10 +126,10 @@ class DonsPage(QWidget):
         self.translations = translations
         self.current_language = current_language
         self.title.setText(
-            self.translations.get(current_language, {}).get("works", "Travaux de la Mosquée")
+            self.translations.get(current_language, {}).get("mosque", "Travaux de la Mosquée")
         )
         self.explanation.setText(
-            self.translations.get(current_language, {}).get("works_help", "Choisissez un montant à donner pour soutenir les travaux de la mosquée.")
+            self.translations.get(current_language, {}).get("mosque_help", "Choisissez un montant à donner pour soutenir les travaux de la mosquée.")
         )
         self.other_amount_button.setText(
             self.translations.get(current_language, {}).get("other_amount", "Autre\nmontant")

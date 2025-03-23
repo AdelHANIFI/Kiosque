@@ -95,21 +95,21 @@ class PaymentPage(QWidget):
             "client_id": str(uuid.uuid4())
         }
 
-        print(f"📡 Envoi de la requête de paiement ({donation_type})...")
+        print(f" Envoi de la requête de paiement ({donation_type})...")
         try:
             response = requests.post(url, headers=headers, json=data)
             if response.status_code == 201:
-                print(f"✅ Paiement initié avec succès.")
+                print(f"Paiement initié avec succès.")
                 QTimer.singleShot(5000, self.check_transaction_status)  # Vérifier après 5s
             elif response.status_code == 422 and "A pending transaction already exists for this device" in response.text:
-                print("⚠️ Un paiement est déjà en attente sur le terminal.")
+                print("Un paiement est déjà en attente sur le terminal.")
                 self.payment_pending = True
                 self.display_pending_message()
             else:
-                print("❌ Erreur lors de l'initiation du paiement :", response.json())
+                print("Erreur lors de l'initiation du paiement :", response.json())
                 self.display_payment_status(False)
         except Exception as e:
-            print("❌ Erreur :", str(e))
+            print("Erreur :", str(e))
             self.display_payment_status(False)
 
     def check_transaction_status(self):
@@ -137,7 +137,7 @@ class PaymentPage(QWidget):
 
                 url = f"https://api.sumup.com/v0.1/me/transactions/history?{next_link}" if next_link else None
             else:
-                print(f"❌ Erreur récupération : {response.status_code}")
+                print(f"Erreur récupération : {response.status_code}")
                 self.display_payment_status(False)
                 return
 
@@ -154,7 +154,7 @@ class PaymentPage(QWidget):
             abs((transaction_time - self.initiated_time).total_seconds()) <= 120
             and transaction_amount == self.amount
         ):
-            print(f"✅ Transaction trouvée : {transaction_status}")
+            print(f"Transaction trouvée : {transaction_status}")
             if transaction_status == "SUCCESSFUL":
                 self.log_transaction(transaction)  
                 self.display_payment_status(True)
@@ -164,7 +164,7 @@ class PaymentPage(QWidget):
                 self.display_payment_status(False)
                 return True
         elif transaction_status == "PENDING":
-            print("⏳ Paiement en attente...")
+            print(" Paiement en attente...")
             return False
 
         return False
@@ -177,7 +177,7 @@ class PaymentPage(QWidget):
             "travaux": "transactions_travaux.txt",
             "zakat": "transactions_zakat.txt",
         }
-        file_name = donation_files.get(self.donation_type, "transactions_autres.txt")  # ✅ Utilisation de self.donation_type
+        file_name = donation_files.get(self.donation_type, "transactions_autres.txt")  
 
         log_entry = (
             f"{datetime.now()} | Montant: {transaction['amount']} {transaction['currency']} | "
@@ -188,12 +188,12 @@ class PaymentPage(QWidget):
         with open(file_name, "a", encoding="utf-8") as f:
             f.write(log_entry)
 
-        print(f"📜 Transaction enregistrée dans {file_name}.")
+        print(f" Transaction enregistrée dans {file_name}.")
 
     def display_pending_message(self):
         """Affiche un message demandant d'annuler ou de finaliser un paiement en attente."""
         self.clear_screen()
-        label = QLabel("⚠️ Un paiement est en attente sur le terminal.\n\nMerci de patienter ou d'annuler le paiement.")
+        label = QLabel("Un paiement est en attente sur le terminal.\n\nMerci de patienter ou d'annuler le paiement.")
         label.setAlignment(Qt.AlignCenter)
         label.setFont(QFont("Arial", 30, QFont.Bold))
         self.layout().addWidget(label)
@@ -203,7 +203,7 @@ class PaymentPage(QWidget):
         self.clear_screen()
         
         if success:
-            message = "✅ Merci pour votre don !"
+            message = " Merci pour votre don !"
             label = QLabel(message)
             label.setAlignment(Qt.AlignCenter)
             label.setFont(QFont("Arial", 30, QFont.Bold))
@@ -213,19 +213,17 @@ class PaymentPage(QWidget):
             QTimer.singleShot(3000, self.return_to_home)
         
         else:
-            message = "❌ Paiement échoué. Veuillez réessayer."
+            message = " Paiement échoué. Veuillez réessayer."
             label = QLabel(message)
             label.setAlignment(Qt.AlignCenter)
             label.setFont(QFont("Arial", 30, QFont.Bold))
             self.layout().addWidget(label)
 
-            # ✅ Ajout d'un bouton pour réessayer le paiement
             retry_button = QPushButton("Réessayer")
             retry_button.setFont(QFont("Arial", 20))
             retry_button.clicked.connect(self.retry_payment)  # Appelle une nouvelle méthode
             self.layout().addWidget(retry_button, alignment=Qt.AlignCenter)
 
-            # ✅ Ajout d'un bouton pour annuler et revenir à l'accueil
             cancel_button = QPushButton("Annuler")
             cancel_button.setFont(QFont("Arial", 20))
             cancel_button.clicked.connect(self.return_to_home)
@@ -254,7 +252,6 @@ class PaymentPage(QWidget):
         """Réinitialise la page et relance le paiement."""
         self.clear_screen()  # On efface l'affichage précédent
 
-        # 🔄 Réaffichage des éléments de la page
         layout = self.layout()
 
         self.title.setText(self.translations.get(self.current_language, {}).get("payment_title", "JE SOUTIENS"))
@@ -284,7 +281,7 @@ class PaymentPage(QWidget):
         self.payment_pending = False
         self.initiated_time = None
 
-        # 🔄 Réaffichage des éléments
+        #  Réaffichage des éléments
         layout = self.layout()
 
         self.title.setText(self.translations.get(self.current_language, {}).get("payment_title", "JE SOUTIENS"))
@@ -306,7 +303,7 @@ class PaymentPage(QWidget):
         self.back_button.setText("Retour")
         layout.addWidget(self.back_button)
 
-        print("🔄 Page réinitialisée !")
+        print(" Page réinitialisée !")
 
 
     def return_to_home(self):
