@@ -1,14 +1,26 @@
-R�ponse de l'API : {'created_at': '2025-03-22T22:12:24.228994716Z', 'device': {'identifier': '200101093165', 'model': 'solo'}, 'id': 'rdr_6ZBEFN18HM8WCSGBJB95K67PF4', 'meta': None, 'name': '', 'status': 'processing', 'updated_at': '2025-03-22T22:12:40.240869386Z'}
- Terminal pair� avec succ�s : {'created_at': '2025-03-22T22:12:24.228994716Z', 'device': {'identifier': '200101093165', 'model': 'solo'}, 'id': 'rdr_6ZBEFN18HM8WCSGBJB95K67PF4', 'meta': None, 'name': '', 'status': 'processing', 'updated_at': '2025-03-22T22:12:40.240869386Z'}
 
 
- R�ponse de l'API : {'created_at': '2025-03-22T22:15:38.817546127Z', 'device': {'identifier': '200101093172', 'model': 'solo'}, 'id': 'rdr_5A15F756CB8TJB13YNW7X70AM8', 'meta': None, 'name': '', 'status': 'processing', 'updated_at': '2025-03-22T22:16:01.571567625Z'}
- Terminal pair� avec succ�s : {'created_at': '2025-03-22T22:15:38.817546127Z', 'device': {'identifier': '200101093172', 'model': 'solo'}, 'id': 'rdr_5A15F756CB8TJB13YNW7X70AM8', 'meta': None, 'name': '', 'status': 'processing', 'updated_at': '2025-03-22T22:16:01.571567625Z'}
-
-
- R�ponse de l'API : {'created_at': '2025-03-22T22:18:07.732070027Z', 'device': {'identifier': '200101092702', 'model': 'solo'}, 'id': 'rdr_4YV2SA0JQX833R69X6XB1EGSPS', 'meta': None, 'name': '', 'status': 'processing', 'updated_at': '2025-03-22T22:18:37.674057663Z'}
- Terminal pair� avec succ�s : {'created_at': '2025-03-22T22:18:07.732070027Z', 'device': {'identifier': '200101092702', 'model': 'solo'}, 'id': 'rdr_4YV2SA0JQX833R69X6XB1EGSPS', 'meta': None, 'name': '', 'status': 'processing', 'updated_at': '2025-03-22T22:18:37.674057663Z'}
-
-
-
-     TERMINAL_ID = "0af00839-2a15-413d-9c8e-584a5e58a72c"  # ID du terminal
+----------------------------
+Nom        : 1
+Reader ID  : rdr_4YV2SA0JQX833R69X6XB1EGSPS
+Mod�le     : solo
+Num�ro de s�rie : 200101092702
+Statut     : paired
+----------------------------
+Nom        : 
+Reader ID  : rdr_5A15F756CB8TJB13YNW7X70AM8
+Mod�le     : solo
+Num�ro de s�rie : 200101093172
+Statut     : paired
+----------------------------
+Nom        : 
+Reader ID  : rdr_6ZBEFN18HM8WCSGBJB95K67PF4
+Mod�le     : solo
+Num�ro de s�rie : 200101093165
+Statut     : paired
+----------------------------
+Nom        : 
+Reader ID  : rdr_0AY043JAGN84YSS3JR99F5H9SC
+Mod�le     : solo
+Num�ro de s�rie : 200100767622
+Statut     : paired

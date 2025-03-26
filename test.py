@@ -1,41 +1,56 @@
 import requests
 
-class SumUpIntegration:
-    def __init__(self, api_key, merchant_code):
-        self.api_key = api_key
-        self.merchant_code = merchant_code
-        self.base_url = "https://api.sumup.com/v0.1"
+API_KEY = "sup_sk_YkWjlUS5edcb0LAVsObRwsJXJu9dMyH6o"
 
-    def pair_terminal(self, pairing_code):
-        """
-        Pairer le terminal SumUp avec le compte marchand.
-        """
-        url = f"{self.base_url}/merchants/{self.merchant_code}/readers"
-        headers = {
-            "Authorization": f"Bearer {self.api_key}",
-            "Content-Type": "application/json"
-        }
-        data = {"pairing_code": pairing_code}
+headers = {
+    "Authorization": f"Bearer {API_KEY}"
+}
+
+def get_all_transactions():
+    url = "https://api.sumup.com/v0.1/me/transactions/history"
+    all_transactions = []
+
+    while url:
+        print(f"Requête vers : {url}")
+        response = requests.get(url, headers=headers)
 
         try:
-            response = requests.post(url, headers=headers, json=data)
-            response.raise_for_status()
-            print("Réponse de l'API :", response.json())
-            return response.json()  # Retourne les détails du terminal pairé
-        except requests.RequestException as e:
-            print("Erreur lors du pairing avec le terminal :", e)
-            return None
+            data = response.json()
+        except Exception as e:
+            print("Erreur JSON :", e)
+            print("Contenu brut :", response.text)
+            break
 
-# Paramètres à utiliser
-api_key = "sup_sk_YkWjlUS5edcb0LAVsObRwsJXJu9dMyH6o"
-merchant_code = "MFT77XNQ"
-pairing_code = "UBGAV0I8R"
+        if isinstance(data, list):
+            print(" La réponse est une liste, structure inattendue :", data)
+            break
 
-# Création d'une instance et pairing du terminal
-sumup = SumUpIntegration(api_key, merchant_code)
-terminal_details = sumup.pair_terminal(pairing_code)
+        if response.status_code != 200:
+            print(" Erreur :", response.status_code, data)
+            break
 
-if terminal_details:
-    print(" Terminal pairé avec succès :", terminal_details)
-else:
-    print(" Le pairing du terminal a échoué.")
+        transactions = data.get("items", [])
+        all_transactions.extend(transactions)
+
+        # Vérification de la pagination
+        next_link = None
+        for link in data.get("links", []):
+            if link.get("rel") == "next":
+                next_link = link.get("href")
+                break
+
+        url = f"https://api.sumup.com/v0.1/me/transactions/history?{next_link}" if next_link else None
+
+    return all_transactions
+
+# Appel de la fonction
+transactions = get_all_transactions()
+
+# Affichage
+print(f"\n{len(transactions)} transaction(s) trouvée(s) :")
+for tx in transactions:
+    print("ID              :", tx.get("transaction_code"))
+    print("Montant         :", tx.get("amount"), tx.get("currency"))
+    print("Statut          :", tx.get("status"))
+    print("Date            :", tx.get("timestamp"))
+    print("Description     :", tx.get("description"))

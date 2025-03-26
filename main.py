@@ -18,6 +18,9 @@ from home_page import HomePage
 class MainApp(QMainWindow):
     def __init__(self):
         super().__init__()
+
+        app.setAttribute(Qt.AA_EnableHighDpiScaling)
+        app.setAttribute(Qt.AA_UseHighDpiPixmaps)
         self.setWindowTitle("Borne de Paiement - Mosquée de Pau")
         self.showFullScreen()  # Fenêtre en plein écran
 
@@ -355,6 +358,7 @@ class MainApp(QMainWindow):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
+
     window = MainApp()
     window.show()
     sys.exit(app.exec())

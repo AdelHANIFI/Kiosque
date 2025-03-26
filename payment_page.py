@@ -6,10 +6,20 @@ import time
 import uuid
 from datetime import datetime, timezone
 import sys
+import json
+import os 
+
+
+
+def load_terminal_id():
+    config_path = os.path.join(os.path.dirname(__file__), "terminal_config.json")
+    with open(config_path, "r") as f:
+        data = json.load(f)
+        return data.get("terminal_id")  # ← Il manquait ce return
 
 class PaymentPage(QWidget):
     API_KEY = "sup_sk_YkWjlUS5edcb0LAVsObRwsJXJu9dMyH6o"  # Clé API SumUp
-    TERMINAL_ID = "0af00839-2a15-413d-9c8e-584a5e58a72c"  # ID du terminal
+    TERMINAL_ID = load_terminal_id() # ID du terminal
     LOG_FILE = "transactions_log.txt"  # Fichier où les transactions seront enregistrées
 
     
@@ -67,40 +77,52 @@ class PaymentPage(QWidget):
         layout.addWidget(self.back_button, alignment=Qt.AlignBottom)
 
         self.setLayout(layout)
-       
-
+        
     def initiate_payment(self, amount, donation_type):
-        """Initie le paiement sur le terminal SumUp."""
+        """Initie le paiement sur le terminal SumUp (type 'reader') en utilisant merchant_code et reader_id."""
         if self.payment_pending:
             self.display_pending_message()
             return
 
         descriptions = {
-            'iftar': 'Don pour l\'Iftar',
-            'travaux': 'Don pour les travaux',
-            'zakat': 'Zakat',
-            'sadaqa': 'Don pour la mosquée'
+            'iftar': "Don pour l'Iftar",
+            'travaux': "Don pour les travaux",
+            'zakat': "Zakat",
+            'sadaqa': "Don pour le parking"
         }
-        description = descriptions.get(donation_type, 'Don pour la mosquée')
+        description = descriptions.get(donation_type, "Don pour les travaux de la mosquée")
 
-        url = f"https://api.sumup.com/v0.1/terminals/{self.TERMINAL_ID}/checkout"
-        headers = {"Authorization": f"Bearer {self.API_KEY}", "Content-Type": "application/json"}
+        merchant_code = "MFT77XNQ"
+        reader_id = self.TERMINAL_ID  # doit être de type rdr_...
 
-        self.initiated_time = datetime.now(timezone.utc)  # Heure du paiement en UTC
+        url = f"https://api.sumup.com/v0.1/merchants/{merchant_code}/readers/{reader_id}/checkout"
+        headers = {
+            "Authorization": f"Bearer {self.API_KEY}",
+            "Content-Type": "application/json"
+        }
+
+        self.initiated_time = datetime.now(timezone.utc)
+
+        value_in_cents = int(float(amount) * 100)
 
         data = {
-            "amount": amount,
-            "currency": "EUR",
+            "total_amount": {
+                "currency": "EUR",
+                "minor_unit": 2,
+                "value": value_in_cents
+            },
             "description": description,
-            "client_id": str(uuid.uuid4())
+            "transaction_id": str(uuid.uuid4())
         }
 
-        print(f" Envoi de la requête de paiement ({donation_type})...")
+        print(f"Envoi de la requête de paiement ({donation_type}) vers {reader_id}...")
         try:
             response = requests.post(url, headers=headers, json=data)
+            response.raise_for_status()
+
             if response.status_code == 201:
-                print(f"Paiement initié avec succès.")
-                QTimer.singleShot(5000, self.check_transaction_status)  # Vérifier après 5s
+                print("Paiement initié avec succès.")
+                QTimer.singleShot(5000, self.check_transaction_status)
             elif response.status_code == 422 and "A pending transaction already exists for this device" in response.text:
                 print("Un paiement est déjà en attente sur le terminal.")
                 self.payment_pending = True
@@ -108,9 +130,14 @@ class PaymentPage(QWidget):
             else:
                 print("Erreur lors de l'initiation du paiement :", response.json())
                 self.display_payment_status(False)
-        except Exception as e:
-            print("Erreur :", str(e))
+        except requests.RequestException as e:
+            print("Erreur lors de l'initiation du paiement :", str(e))
+            if hasattr(e, 'response') and e.response is not None:
+                print("Réponse de l'API :", e.response.status_code, e.response.text)
             self.display_payment_status(False)
+        
+        
+
 
     def check_transaction_status(self):
         """Vérifie l'état du paiement avec pagination `next_link`."""
@@ -145,30 +172,33 @@ class PaymentPage(QWidget):
 
     def compare_transaction(self, transaction):
         """Compare la transaction avec celle initiée en utilisant l'heure et le montant."""
-        transaction_time = datetime.fromisoformat(transaction["timestamp"].replace("Z", "+00:00"))
-        transaction_amount = float(transaction["amount"])
-        transaction_status = transaction["status"]
 
-        # Vérification avec l'heure et le montant uniquement
-        if (
-            abs((transaction_time - self.initiated_time).total_seconds()) <= 120
-            and transaction_amount == self.amount
-        ):
-            print(f"Transaction trouvée : {transaction_status}")
+
+        transaction_time = datetime.fromisoformat(transaction["timestamp"].replace("Z", "+00:00"))
+        transaction_amount = float(transaction.get("amount", 0))
+        transaction_status = transaction.get("status", "UNKNOWN")
+  
+        delta = abs((transaction_time - self.initiated_time).total_seconds())
+
+        # Vérifie si la transaction correspond en temps et montant
+        if delta <= 120 and transaction_amount == self.amount:
+            print(f"Transaction trouvée avec statut : {transaction_status}")
+
+            # Log + affichage en fonction du statut
+
             if transaction_status == "SUCCESSFUL":
-                self.log_transaction(transaction)  
+                self.log_transaction(transaction)
                 self.display_payment_status(True)
-                return True
             elif transaction_status == "FAILED":
-                self.log_transaction(transaction)  
+                self.log_transaction(transaction)
                 self.display_payment_status(False)
-                return True
+                return True  # Trouvé
         elif transaction_status == "PENDING":
-            print(" Paiement en attente...")
-            return False
+            print("Paiement en attente...")
+            return False  # Pas terminé
+
 
         return False
-
     def log_transaction(self, transaction):
         """Enregistre une transaction réussie dans le bon fichier."""
         donation_files = {
@@ -203,7 +233,9 @@ class PaymentPage(QWidget):
         self.clear_screen()
         
         if success:
-            message = " Merci pour votre don !"
+            # un message de remerciement en francais anglais et arabe et une duaa pour le donateur
+            message = "Paiement réussi. Merci pour votre soutien !\n\nQue Dieu accepte votre don et vous récompense. \n\nآمين"
+            
             label = QLabel(message)
             label.setAlignment(Qt.AlignCenter)
             label.setFont(QFont("Arial", 30, QFont.Bold))
@@ -281,7 +313,7 @@ class PaymentPage(QWidget):
         self.payment_pending = False
         self.initiated_time = None
 
-        #  Réaffichage des éléments
+        # 🔄 Réaffichage des éléments
         layout = self.layout()
 
         self.title.setText(self.translations.get(self.current_language, {}).get("payment_title", "JE SOUTIENS"))
@@ -307,7 +339,10 @@ class PaymentPage(QWidget):
 
 
     def return_to_home(self):
-        """Annule et retourne à l'accueil avec une page propre."""
+        if self.payment_pending:
+            print("Annulation du paiement en attente...")
+            self.cancel_pending_transaction()
+
         self.reset_page()  # Réinitialise tout avant de partir
         parent = self.parent()
         if parent:

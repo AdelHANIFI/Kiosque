@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 
 On branch main
@@ -20,3 +21,5 @@ error: Your local changes to the following files would be overwritten by merge:
 Please commit your changes or stash them before you merge.
 Aborting
 Updating ba62490..42494a1
+=======
+>>>>>>> 42494a13fd32552b2b7a1bf24ffb6fb81b9e628d
