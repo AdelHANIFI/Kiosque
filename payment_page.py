@@ -88,9 +88,9 @@ class PaymentPage(QWidget):
             'iftar': "Don pour l'Iftar",
             'travaux': "Don pour les travaux",
             'zakat': "Zakat",
-            'sadaqa': "Don pour la mosquée"
+            'sadaqa': "Don pour le parking"
         }
-        description = descriptions.get(donation_type, "Don pour la mosquée")
+        description = descriptions.get(donation_type, "Don pour les travaux de la mosquée")
 
         merchant_code = "MFT77XNQ"
         reader_id = self.TERMINAL_ID  # doit être de type rdr_...
@@ -172,30 +172,33 @@ class PaymentPage(QWidget):
 
     def compare_transaction(self, transaction):
         """Compare la transaction avec celle initiée en utilisant l'heure et le montant."""
-        transaction_time = datetime.fromisoformat(transaction["timestamp"].replace("Z", "+00:00"))
-        transaction_amount = float(transaction["amount"])
-        transaction_status = transaction["status"]
 
-        # Vérification avec l'heure et le montant uniquement
-        if (
-            abs((transaction_time - self.initiated_time).total_seconds()) <= 120
-            and transaction_amount == self.amount
-        ):
-            print(f"Transaction trouvée : {transaction_status}")
+
+        transaction_time = datetime.fromisoformat(transaction["timestamp"].replace("Z", "+00:00"))
+        transaction_amount = float(transaction.get("amount", 0))
+        transaction_status = transaction.get("status", "UNKNOWN")
+  
+        delta = abs((transaction_time - self.initiated_time).total_seconds())
+
+        # Vérifie si la transaction correspond en temps et montant
+        if delta <= 120 and transaction_amount == self.amount:
+            print(f"Transaction trouvée avec statut : {transaction_status}")
+
+            # Log + affichage en fonction du statut
+
             if transaction_status == "SUCCESSFUL":
-                self.log_transaction(transaction)  
+                self.log_transaction(transaction)
                 self.display_payment_status(True)
-                return True
             elif transaction_status == "FAILED":
-                self.log_transaction(transaction)  
+                self.log_transaction(transaction)
                 self.display_payment_status(False)
-                return True
+                return True  # Trouvé
         elif transaction_status == "PENDING":
-            print(" Paiement en attente...")
-            return False
+            print("Paiement en attente...")
+            return False  # Pas terminé
+
 
         return False
-
     def log_transaction(self, transaction):
         """Enregistre une transaction réussie dans le bon fichier."""
         donation_files = {
@@ -230,7 +233,9 @@ class PaymentPage(QWidget):
         self.clear_screen()
         
         if success:
-            message = " Merci pour votre don !"
+            # un message de remerciement en francais anglais et arabe et une duaa pour le donateur
+            message = "Paiement réussi. Merci pour votre soutien !\n\nQue Dieu accepte votre don et vous récompense. \n\nآمين"
+            
             label = QLabel(message)
             label.setAlignment(Qt.AlignCenter)
             label.setFont(QFont("Arial", 30, QFont.Bold))
@@ -334,7 +339,10 @@ class PaymentPage(QWidget):
 
 
     def return_to_home(self):
-        """Annule et retourne à l'accueil avec une page propre."""
+        if self.payment_pending:
+            print("Annulation du paiement en attente...")
+            self.cancel_pending_transaction()
+
         self.reset_page()  # Réinitialise tout avant de partir
         parent = self.parent()
         if parent:
