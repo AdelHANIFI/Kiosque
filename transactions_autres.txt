@@ -20,3 +20,7 @@
 2025-03-27 18:17:32.512019 | Montant: 10.0 EUR | Carte: UNKNOWN | Statut: FAILED | Utilisateur: mosquee64pau@gmail.com
 2025-03-27 18:18:13.529058 | Montant: 10.0 EUR | Carte: UNKNOWN | Statut: FAILED | Utilisateur: mosquee64pau@gmail.com
 2025-03-27 18:22:19.463837 | Montant: 100.0 EUR | Carte: UNKNOWN | Statut: FAILED | Utilisateur: mosquee64pau@gmail.com
+2025-03-27 18:31:52.223133 | Montant: 10.0 EUR | Carte: UNKNOWN | Statut: FAILED | Utilisateur: mosquee64pau@gmail.com
+2025-03-27 18:32:51.279451 | Montant: 5.0 EUR | Carte: UNKNOWN | Statut: FAILED | Utilisateur: mosquee64pau@gmail.com
+2025-03-27 18:33:30.271101 | Montant: 100.0 EUR | Carte: UNKNOWN | Statut: FAILED | Utilisateur: mosquee64pau@gmail.com
+2025-03-27 18:33:50.043526 | Montant: 100.0 EUR | Carte: UNKNOWN | Statut: FAILED | Utilisateur: mosquee64pau@gmail.com
