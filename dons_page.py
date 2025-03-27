@@ -94,7 +94,13 @@ class DonsPage(QWidget):
         
         layout.addLayout(buttons_layout)
         layout.addSpacerItem(QSpacerItem(0, 20, QSizePolicy.Minimum, QSizePolicy.Expanding))
-        
+                # Bouton "Payer la Zakat al-Fitr (7 €)" (agrandi)
+        self.zakat_button = QPushButton(
+            self.translations.get(self.current_language, {}).get("zakat_button", "Payer la Zakat al-Fitr (7 €)")
+        )
+        self.zakat_button.setFont(QFont("Arial", 22))
+        self.zakat_button.clicked.connect(self.handle_zakat)
+        layout.addWidget(self.zakat_button, alignment=Qt.AlignBottom)
         # Bouton retour
         back_text = self.translations.get(self.current_language, {}).get("back", "Retour")
         self.back_button = QPushButton(back_text)
@@ -152,7 +158,13 @@ class DonsPage(QWidget):
         parent = self.parent()
         if parent:
             parent.setCurrentIndex(0)
-    
+    def handle_zakat(self):
+        """
+        Navigue vers la page de paiement de la Zakat.
+        """
+        parent = self.parent()
+        if parent:
+            parent.setCurrentIndex(parent.indexOf(parent.parent().zakat_page))
     def go_to_other_amount_page(self, donation_type):
         """Navigue vers la page 'Autre montant' avec le type de don spécifié."""
         main_app = self.window()  # Accède à la fenêtre principale

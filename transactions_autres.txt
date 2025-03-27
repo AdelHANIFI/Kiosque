@@ -18,3 +18,5 @@
 2025-03-26 18:00:03.995327 | Montant: 1.0 EUR | Carte: VISA | Statut: SUCCESSFUL | Utilisateur: mosquee64pau@gmail.com
 2025-03-26 18:00:31.213301 | Montant: 1.0 EUR | Carte: VISA | Statut: SUCCESSFUL | Utilisateur: mosquee64pau@gmail.com
 2025-03-27 18:21:50.646475 | Montant: 5.0 EUR | Carte: UNKNOWN | Statut: FAILED | Utilisateur: mosquee64pau@gmail.com
+2025-03-27 18:37:03.408563 | Montant: 5.0 EUR | Carte: UNKNOWN | Statut: FAILED | Utilisateur: mosquee64pau@gmail.com
+2025-03-27 18:41:58.901474 | Montant: 7.0 EUR | Carte: UNKNOWN | Statut: FAILED | Utilisateur: mosquee64pau@gmail.com
