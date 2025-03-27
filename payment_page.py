@@ -71,6 +71,7 @@ class PaymentPage(QWidget):
         self.instructions.setFont(QFont("Arial", 20))
         layout.addWidget(self.instructions)
 
+
         self.back_button = QPushButton("Retour")
         self.back_button.setFont(QFont("Arial", 20))
         self.back_button.clicked.connect(self.return_to_home)
@@ -336,6 +337,7 @@ class PaymentPage(QWidget):
         layout.addWidget(self.back_button)
 
         print(" Page réinitialisée !")
+
 
 
     def return_to_home(self):
