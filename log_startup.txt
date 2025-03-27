@@ -1,0 +1,1 @@
+/home/mosqueePau/Desktop/Kiosque/update_kiosque.sh: line 8: GIT_TOKEN: command not found
