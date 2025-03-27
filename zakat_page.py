@@ -41,8 +41,17 @@ class ZakatPage(QWidget):
         self.people_spinbox.setMinimum(1)
         self.people_spinbox.setMaximum(300)
         self.people_spinbox.setValue(1)
-        self.people_spinbox.setFont(QFont("Arial", 22))
-        self.people_spinbox.valueChanged.connect(self.update_button_amount)
+        self.people_spinbox.setFont(QFont("Arial", 30))
+        self.people_spinbox.setFixedSize(150, 80)
+        self.people_spinbox.setStyleSheet("""
+            QSpinBox {
+                padding: 10px;
+            }
+            QSpinBox::up-button, QSpinBox::down-button {
+                width: 30px;
+                height: 30px;
+            }
+        """)
 
         people_layout.addWidget(people_label)
         people_layout.addWidget(self.people_spinbox)
