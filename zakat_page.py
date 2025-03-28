@@ -53,6 +53,7 @@ class ZakatPage(QWidget):
             }
         """)
 
+
         people_layout.addWidget(people_label)
         people_layout.addWidget(self.people_spinbox)
         people_layout.setAlignment(Qt.AlignCenter)
@@ -76,6 +77,9 @@ class ZakatPage(QWidget):
             }
         """)
         self.zakat_button.clicked.connect(self.pay_zakat)
+        self.people_spinbox.valueChanged.connect(self.update_button_amount)
+        self.update_button_amount()  # ← Ajoutez ceci pour mettre à jour dès le départ
+
 
         # Bouton retour
         self.back_button = QPushButton(self.translations.get(self.current_language, {}).get("back", "Retour"))
