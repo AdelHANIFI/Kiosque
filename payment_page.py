@@ -243,7 +243,7 @@ class PaymentPage(QWidget):
             self.layout().addWidget(label)
 
             # Retour à l'accueil après 3 secondes
-            QTimer.singleShot(3000, self.return_to_home)
+            QTimer.singleShot(2000, self.return_to_home)
         
         else:
             message = " Paiement échoué. Veuillez réessayer."
