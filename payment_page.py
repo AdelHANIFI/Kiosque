@@ -123,7 +123,7 @@ class PaymentPage(QWidget):
 
             if response.status_code == 201:
                 print("Paiement initié avec succès.")
-                QTimer.singleShot(5000, self.check_transaction_status)
+                QTimer.singleShot(2000, self.check_transaction_status)
             elif response.status_code == 422 and "A pending transaction already exists for this device" in response.text:
                 print("Un paiement est déjà en attente sur le terminal.")
                 self.payment_pending = True
@@ -169,7 +169,7 @@ class PaymentPage(QWidget):
                 self.display_payment_status(False)
                 return
 
-        QTimer.singleShot(2000, self.check_transaction_status)  # Relancer dans 5s
+        QTimer.singleShot(1000, self.check_transaction_status)  # Relancer dans 5s
 
     def compare_transaction(self, transaction):
         """Compare la transaction avec celle initiée en utilisant l'heure et le montant."""
