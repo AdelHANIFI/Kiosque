@@ -169,7 +169,7 @@ class PaymentPage(QWidget):
                 self.display_payment_status(False)
                 return
 
-        QTimer.singleShot(1000, self.check_transaction_status)  # Relancer dans 5s
+        self.check_transaction_status
 
     def compare_transaction(self, transaction):
         """Compare la transaction avec celle initiée en utilisant l'heure et le montant."""
