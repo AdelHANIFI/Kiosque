@@ -1,0 +1,16 @@
+[main 17c4e0a] mise à jour automatique 2025-03628 14:29:05
+ 3 files changed, 4 insertions(+), 2 deletions(-)
+ssh: Could not resolve hostname github.com: Temporary failure in name resolution
+fatal: Could not read from remote repository.
+
+Please make sure you have the correct access rights
+and the repository exists.
+ssh: Could not resolve hostname github.com: Temporary failure in name resolution
+fatal: Could not read from remote repository.
+
+Please make sure you have the correct access rights
+and the repository exists.
+/home/mosqueePau/Desktop/Kiosque/main.py:22: DeprecationWarning: Enum value 'Qt::ApplicationAttribute.AA_EnableHighDpiScaling' is marked as deprecated, please check the documentation for more information.
+  app.setAttribute(Qt.AA_EnableHighDpiScaling)
+/home/mosqueePau/Desktop/Kiosque/main.py:23: DeprecationWarning: Enum value 'Qt::ApplicationAttribute.AA_UseHighDpiPixmaps' is marked as deprecated, please check the documentation for more information.
+  app.setAttribute(Qt.AA_UseHighDpiPixmaps)
