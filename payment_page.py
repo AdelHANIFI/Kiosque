@@ -252,10 +252,10 @@ class PaymentPage(QWidget):
             label.setFont(QFont("Arial", 30, QFont.Bold))
             self.layout().addWidget(label)
 
-            retry_button = QPushButton("Réessayer")
-            retry_button.setFont(QFont("Arial", 20))
-            retry_button.clicked.connect(self.retry_payment)  # Appelle une nouvelle méthode
-            self.layout().addWidget(retry_button, alignment=Qt.AlignCenter)
+          #  retry_button = QPushButton("Réessayer")
+           # retry_button.setFont(QFont("Arial", 20))
+          #  retry_button.clicked.connect(self.retry_payment)  # Appelle une nouvelle méthode
+          #  self.layout().addWidget(retry_button, alignment=Qt.AlignCenter)
 
             cancel_button = QPushButton("Annuler")
             cancel_button.setFont(QFont("Arial", 20))
