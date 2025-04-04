@@ -169,8 +169,7 @@ class PaymentPage(QWidget):
                 self.display_payment_status(False)
                 return
 
-        print(" Relance de la vérification ...")
-        QTimer.singleShot(1000, self.check_transaction_status)  
+        QTimer.singleShot(1000, self.check_transaction_status) 
 
     def compare_transaction(self, transaction):
         """Compare la transaction avec celle initiée."""
