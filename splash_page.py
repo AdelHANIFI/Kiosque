@@ -91,7 +91,6 @@ class SplashPage(QWidget):
 
         if selected_text in languages:
             new_language = languages[selected_text]
-            print(f" SplashPage: Langue sélectionnée -> {new_language}")
             self.language_changed.emit(new_language)  # 🔴 Envoi du signal sous forme de texte
 
 

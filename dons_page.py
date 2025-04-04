@@ -94,13 +94,13 @@ class DonsPage(QWidget):
         
         layout.addLayout(buttons_layout)
         layout.addSpacerItem(QSpacerItem(0, 20, QSizePolicy.Minimum, QSizePolicy.Expanding))
-                # Bouton "Payer la Zakat al-Fitr (7 €)" (agrandi)
-        self.zakat_button = QPushButton(
-            self.translations.get(self.current_language, {}).get("zakat_button", "Payer la Zakat al-Fitr (7 €)")
-        )
-        self.zakat_button.setFont(QFont("Arial", 22))
-        self.zakat_button.clicked.connect(self.handle_zakat)
-        layout.addWidget(self.zakat_button, alignment=Qt.AlignBottom)
+        #         # Bouton "Payer la Zakat al-Fitr (7 €)" (agrandi)
+        # self.zakat_button = QPushButton(
+        #     self.translations.get(self.current_language, {}).get("zakat_button", "Payer la Zakat al-Fitr (7 €)")
+        # )
+        # self.zakat_button.setFont(QFont("Arial", 22))
+        # self.zakat_button.clicked.connect(self.handle_zakat)
+        # layout.addWidget(self.zakat_button, alignment=Qt.AlignBottom)
         # Bouton retour
         back_text = self.translations.get(self.current_language, {}).get("back", "Retour")
         self.back_button = QPushButton(back_text)
@@ -143,6 +143,9 @@ class DonsPage(QWidget):
         self.back_button.setText(
             self.translations.get(current_language, {}).get("back", "Retour")
         )
+        # self.zakat_button.setText(
+        #     self.translations.get(current_language, {}).get("zakat_button", "Payer la Zakat al-Fitr (7 €)")
+        # )
    
     def navigate_to_payment(self, montant):
         """Navigue vers la page de paiement et initie le paiement."""

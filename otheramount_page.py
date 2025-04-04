@@ -13,7 +13,6 @@ class OtherAmountPage(QWidget):
         self.current_language = current_language
         self.init_ui()
         self.payment_page = payment_page
-        self.donation_type = None  # Initialise le type de don
     def init_ui(self):
         main_layout = QVBoxLayout()
         main_layout.setContentsMargins(30, 30, 30, 30)

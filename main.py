@@ -162,7 +162,7 @@ class MainApp(QMainWindow):
                 "zakat_title": "زكاة الفطر",
                 "zakat_explanation": "زكاة الفطر محددة بـ 7 يورو لكل شخص.\nيرجى الضغط على الزر أدناه للدفع.",
                 "zakat": "ادفع 7 يورو",
-                "zakat_button": "ادفع 7 يورو",
+                "zakat_button": "دفع زكاة الفطر (7 €)",
                 "payment_title": "أدعم",
                 "payment_subtitle": "مسجد بو",
                 "payment_instructions": "يرجى النقر أو إدخال بطاقة الائتمان/الخصم الخاصة بك أدناه"
@@ -305,25 +305,19 @@ class MainApp(QMainWindow):
         self.translations = translations
         self.current_language = current_language
 
-        print(f" Mise à jour HomePage avec {current_language}")
 
         # Vérifier que les labels existent avant de les modifier
         if hasattr(self, "title") and isinstance(self.title, QLabel):
             self.title.setText(self.translations[current_language].get("title", "Titre par défaut"))
-            print(f" Mise à jour du titre : {self.title.text()}")
         if hasattr(self, "footer") and isinstance(self.footer, QLabel):
             self.footer.setText(self.translations[current_language].get("footer", ""))
-            print(f" Mise à jour du footer : {self.footer.text()}")
 
         for text_label, help_label, key, help_key in self.buttons:
             if isinstance(text_label, QLabel):
                 text_label.setText(self.translations[current_language].get(key, ""))
-                print(f" Mise à jour du texte : {text_label.text()}")
             if isinstance(help_label, QLabel):
                 help_label.setText(self.translations[current_language].get(help_key, ""))
-                print(f" Mise à jour de l'aide : {help_label.text()}")
 
-        print("✅ Mise à jour terminée pour HomePage")
 
 
     def change_language(self, new_language):
@@ -340,21 +334,19 @@ class MainApp(QMainWindow):
             return
 
         self.current_language = new_language
-        print(f" Changement de langue appliqué : {self.current_language}")
 
         # 🔴 Appliquer la nouvelle langue à toutes les pages
         for page in [self.splash_page, self.home_page, self.dons_page, self.ramadan_page, 
                     self.iftar_page, self.zakat_page, self.works_page, self.otheramount_page, 
                     self.payment_page]:
             if hasattr(page, 'update_translations'):
-                print(f" Mise à jour de {page.__class__.__name__}")
                 page.update_translations(self.translations, self.current_language)
 
 
 
         for text_label, help_label, key, help_key in self.buttons:
             text_label.setText(self.translations[self.current_language].get(key, ""))
-            help_label.setText(self.translations[self.current_language].get(help_key, ""))
+            help_label.setText(self.translations[self.current_language].get(help_key, ""))          
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

@@ -72,10 +72,10 @@ class PaymentPage(QWidget):
         layout.addWidget(self.instructions)
 
 
-        self.back_button = QPushButton("Retour")
-        self.back_button.setFont(QFont("Arial", 20))
-        self.back_button.clicked.connect(self.return_to_home)
-        layout.addWidget(self.back_button, alignment=Qt.AlignBottom)
+        # self.back_button = QPushButton("Retour")
+        # self.back_button.setFont(QFont("Arial", 20))
+        # self.back_button.clicked.connect(self.return_to_home)
+        # layout.addWidget(self.back_button, alignment=Qt.AlignBottom)
 
         self.setLayout(layout)
         
@@ -123,7 +123,7 @@ class PaymentPage(QWidget):
 
             if response.status_code == 201:
                 print("Paiement initié avec succès.")
-                self.check_transaction_status
+                self.check_transaction_status()
             elif response.status_code == 422 and "A pending transaction already exists for this device" in response.text:
                 print("Un paiement est déjà en attente sur le terminal.")
                 self.payment_pending = True
@@ -165,41 +165,31 @@ class PaymentPage(QWidget):
 
                 url = f"https://api.sumup.com/v0.1/me/transactions/history?{next_link}" if next_link else None
             else:
-                print(f"Erreur récupération : {response.status_code}")
+                print(f" Erreur récupération : {response.status_code}")
                 self.display_payment_status(False)
                 return
 
-        self.check_transaction_status
+        print(" Relance de la vérification ...")
+        QTimer.singleShot(1000, self.check_transaction_status)  
 
     def compare_transaction(self, transaction):
-        """Compare la transaction avec celle initiée en utilisant l'heure et le montant."""
-
-
+        """Compare la transaction avec celle initiée."""
+        external_reference = transaction.get("external_reference", "Non défini")
         transaction_time = datetime.fromisoformat(transaction["timestamp"].replace("Z", "+00:00"))
-        transaction_amount = float(transaction.get("amount", 0))
-        transaction_status = transaction.get("status", "UNKNOWN")
-  
-        delta = abs((transaction_time - self.initiated_time).total_seconds())
+        transaction_amount = float(transaction["amount"])
+        transaction_status = transaction["status"]
 
-        # Vérifie si la transaction correspond en temps et montant
-        if delta <= 120 and transaction_amount == self.amount:
-            print(f"Transaction trouvée avec statut : {transaction_status}")
-
-            # Log + affichage en fonction du statut
-
-            if transaction_status == "SUCCESSFUL":
-                self.log_transaction(transaction)
-                self.display_payment_status(True)
-            elif transaction_status == "FAILED":
-                self.log_transaction(transaction)
-                self.display_payment_status(False)
-                return True  # Trouvé
+        if  abs((transaction_time - self.initiated_time).total_seconds()) <= 120 and transaction_amount == self.amount:
+            print(f" Transaction trouvée : {transaction_status}")
+            if transaction_status in ["SUCCESSFUL", "FAILED"]:
+                self.display_payment_status(transaction_status == "SUCCESSFUL")
+                return True
         elif transaction_status == "PENDING":
-            print("Paiement en attente...")
-            return False  # Pas terminé
-
+            print(" Paiement en attente...")
+            return False
 
         return False
+
     def log_transaction(self, transaction):
         """Enregistre une transaction réussie dans le bon fichier."""
         donation_files = {
@@ -251,16 +241,17 @@ class PaymentPage(QWidget):
             label.setAlignment(Qt.AlignCenter)
             label.setFont(QFont("Arial", 30, QFont.Bold))
             self.layout().addWidget(label)
+            QTimer.singleShot(2000, self.return_to_home)
 
           #  retry_button = QPushButton("Réessayer")
            # retry_button.setFont(QFont("Arial", 20))
           #  retry_button.clicked.connect(self.retry_payment)  # Appelle une nouvelle méthode
           #  self.layout().addWidget(retry_button, alignment=Qt.AlignCenter)
 
-            cancel_button = QPushButton("Annuler")
-            cancel_button.setFont(QFont("Arial", 20))
-            cancel_button.clicked.connect(self.return_to_home)
-            self.layout().addWidget(cancel_button, alignment=Qt.AlignCenter)
+         #   cancel_button = QPushButton("Annuler")
+          #  cancel_button.setFont(QFont("Arial", 20))
+          #  cancel_button.clicked.connect(self.return_to_home)
+          #  self.layout().addWidget(cancel_button, alignment=Qt.AlignCenter)
 
     def clear_screen(self):
         """Efface tous les widgets de la page."""
@@ -333,17 +324,17 @@ class PaymentPage(QWidget):
         self.instructions.setText("Veuillez taper ou insérer votre carte de crédit/débit ci-dessous")
         layout.addWidget(self.instructions)
 
-        self.back_button.setText("Retour")
-        layout.addWidget(self.back_button)
+     #   self.back_button.setText("Retour")
+    #    layout.addWidget(self.back_button)
 
         print(" Page réinitialisée !")
 
 
 
     def return_to_home(self):
-        if self.payment_pending:
-            print("Annulation du paiement en attente...")
-            self.cancel_pending_transaction()
+        # if self.payment_pending:
+        #     print("Annulation du paiement en attente...")
+        #     self.cancel_pending_transaction()
 
         self.reset_page()  # Réinitialise tout avant de partir
         parent = self.parent()
