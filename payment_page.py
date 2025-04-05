@@ -8,7 +8,7 @@ from datetime import datetime, timezone
 import sys
 import json
 import os 
-
+from transaction_checker import TransactionChecker  # ou le fichier où vous avez mis la classe
 
 
 def load_terminal_id():
@@ -123,7 +123,10 @@ class PaymentPage(QWidget):
 
             if response.status_code == 201:
                 print("Paiement initié avec succès.")
-                self.check_transaction_status()
+                self.checker_thread = TransactionChecker(self.API_KEY, self.initiated_time, self.amount)
+                self.checker_thread.transaction_found.connect(self.handle_transaction_result)
+                self.checker_thread.transaction_failed.connect(lambda: self.display_payment_status(False))
+                self.checker_thread.start()
             elif response.status_code == 422 and "A pending transaction already exists for this device" in response.text:
                 print("Un paiement est déjà en attente sur le terminal.")
                 self.payment_pending = True
@@ -271,6 +274,14 @@ class PaymentPage(QWidget):
         else:
             self.amount_label.setText("******")
             self.toggle_button.setText("Afficher montant")
+    def handle_transaction_result(self, tx):
+        print("Transaction reçue du thread :", tx.get("status"))
+        if tx.get("status") == "SUCCESSFUL":
+            self.log_transaction(tx)
+            self.display_payment_status(True)
+        else:
+            self.display_payment_status(False)
+
     def retry_payment(self):
         """Réinitialise la page et relance le paiement."""
         self.clear_screen()  # On efface l'affichage précédent
@@ -315,7 +326,7 @@ class PaymentPage(QWidget):
 
         self.amount_label.setText(f"{self.amount:.2f} €")
         layout.addWidget(self.amount_label)
-
+        layout.addWidget(self.toggle_button, alignment=Qt.AlignCenter)
         self.gif_label.setMovie(self.gif)
         self.gif.start()
         layout.addWidget(self.gif_label)
