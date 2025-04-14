@@ -218,6 +218,8 @@ class OtherAmountPage(QWidget):
 
     def navigate_to_payment(self, montant):
         """Navigue vers la page de paiement et initie le paiement."""
+        self.amount_input.clear()  # Efface le champ de saisie
+
         if self.payment_page:
             self.payment_page.set_amount(montant)
             self.payment_page.initiate_payment(montant, self.donation_type)  # Appelle la méthode d'initiation de paiement avec le type de don

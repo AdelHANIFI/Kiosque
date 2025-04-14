@@ -172,7 +172,7 @@ class PaymentPage(QWidget):
                 self.display_payment_status(False)
                 return
 
-        QTimer.singleShot(1000, self.check_transaction_status) 
+        QTimer.singleShot(500, self.check_transaction_status) 
 
     def compare_transaction(self, transaction):
         """Compare la transaction avec celle initiée."""
@@ -213,14 +213,7 @@ class PaymentPage(QWidget):
 
         print(f" Transaction enregistrée dans {file_name}.")
 
-    def display_pending_message(self):
-        """Affiche un message demandant d'annuler ou de finaliser un paiement en attente."""
-        self.clear_screen()
-        label = QLabel("Un paiement est en attente sur le terminal.\n\nMerci de patienter ou d'annuler le paiement.")
-        label.setAlignment(Qt.AlignCenter)
-        label.setFont(QFont("Arial", 30, QFont.Bold))
-        self.layout().addWidget(label)
-        QTimer.singleShot(3000, self.return_to_home)
+
     def display_payment_status(self, success):
         """Affiche le statut du paiement et redirige vers la bonne page."""
         self.clear_screen()

@@ -299,7 +299,7 @@ class MainApp(QMainWindow):
         self.pages.setCurrentWidget(self.ramadan_page)
 
     def handle_works(self):
-        self.pages.setCurrentWidget(self.works_page)
+        self.pages.setCurrentWidget(self.works_page)    
     def update_translations(self, translations, current_language):
         """Met à jour les textes de la page d'accueil avec la nouvelle langue."""
         self.translations = translations
