@@ -1,9 +1,9 @@
 from PySide6.QtWidgets import (
     QWidget, QVBoxLayout, QLabel, QHBoxLayout, QPushButton,
-    QGridLayout, QLineEdit, QSizePolicy, QSpacerItem
+    QGridLayout, QLineEdit, QSizePolicy, QSpacerItem, QMessageBox
 )
 from PySide6.QtGui import QFont
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, QTimer
 
 class OtherAmountPage(QWidget):
     def __init__(self, parent=None, payment_page=None, translations=None, current_language="fr"):
@@ -11,8 +11,11 @@ class OtherAmountPage(QWidget):
         self.donation_type = None  # Initialise le type de don
         self.translations = translations if translations is not None else {}
         self.current_language = current_language
+        self.invalid_amount_title = "Erreur de montant"
+        self.invalid_amount_message = "Veuillez entrer un montant valide."
         self.init_ui()
         self.payment_page = payment_page
+
     def init_ui(self):
         main_layout = QVBoxLayout()
         main_layout.setContentsMargins(30, 30, 30, 30)
@@ -53,7 +56,8 @@ class OtherAmountPage(QWidget):
             QPushButton:pressed {
                 background-color: #b0d6d6;
             }
-        """)
+        """
+)
         self.toggle_button.clicked.connect(self.toggle_visibility)
         toggle_layout.addWidget(self.toggle_button)
         toggle_layout.addStretch()
@@ -86,7 +90,8 @@ class OtherAmountPage(QWidget):
                 QPushButton:pressed {
                     background-color: #a8e4e4;
                 }
-            """)
+            """
+)
             btn.clicked.connect(self.handle_keypress)
             keypad_layout.addWidget(btn, row, col, Qt.AlignCenter)
         main_layout.addLayout(keypad_layout)
@@ -107,7 +112,8 @@ class OtherAmountPage(QWidget):
             QPushButton:hover {
                 background-color: #45a049;
             }
-        """)
+        """
+)
         self.validate_button.clicked.connect(self.validate_amount)
         validate_layout.addWidget(self.validate_button)
         validate_layout.addStretch()
@@ -136,36 +142,47 @@ class OtherAmountPage(QWidget):
             QPushButton:pressed {
                 background-color: #b0d6d6;
             }
-        """)
+        """
+)
         self.back_button.clicked.connect(self.return_to_previous_page)
         back_layout.addWidget(self.back_button)
         back_layout.addStretch()
         main_layout.addLayout(back_layout)
         
         self.setLayout(main_layout)
+
     def set_donation_type(self, donation_type):
         """Définit le type de don."""
         self.donation_type = donation_type
+
     def update_translations(self, translations, current_language):
         self.translations = translations
         self.current_language = current_language
+        tr = self.translations.get(current_language, {})
+
         self.title.setText(
-            self.translations.get(current_language, {}).get("other_amount_title", "Saisissez un montant")
+            tr.get("other_amount_title", "Saisissez un montant")
         )
-        # Actualise le texte du bouton toggle selon son état
         if self.toggle_button.isChecked():
             self.toggle_button.setText(
-                self.translations.get(current_language, {}).get("show_amount", "Afficher montant")
+                tr.get("show_amount", "Afficher montant")
             )
         else:
             self.toggle_button.setText(
-                self.translations.get(current_language, {}).get("hide_amount", "Cacher montant")
+                tr.get("hide_amount", "Cacher montant")
             )
         self.validate_button.setText(
-            self.translations.get(current_language, {}).get("validate", "Valider")
+            tr.get("validate", "Valider")
         )
         self.back_button.setText(
-            self.translations.get(current_language, {}).get("back", "Retour")
+            tr.get("back", "Retour")
+        )
+        # Stockage des traductions pour le message d'erreur
+        self.invalid_amount_title = tr.get(
+            "invalid_amount_title", "Erreur de montant"
+        )
+        self.invalid_amount_message = tr.get(
+            "invalid_amount", "Veuillez entrer un montant valide."
         )
 
     def handle_keypress(self):
@@ -198,31 +215,41 @@ class OtherAmountPage(QWidget):
             if not amount or float(amount) <= 0:
                 raise ValueError
         except ValueError:
-            error_message = self.translations.get(self.current_language, {}).get("invalid_amount", "Veuillez entrer un montant valide.")
-            error_dialog = QLabel(error_message)
-            error_dialog.setAlignment(Qt.AlignCenter)
-            error_dialog.setFont(QFont("Arial", 20, QFont.Bold))
-            self.layout().addWidget(error_dialog)
+            # Création et stockage de la boîte de dialogue
+            self._error_msg_box = QMessageBox(self)
+            self._error_msg_box.setWindowTitle(self.invalid_amount_title)
+            self._error_msg_box.setText(self.invalid_amount_message)
+            self._error_msg_box.setIcon(QMessageBox.Warning)
+            self._error_msg_box.setStandardButtons(QMessageBox.NoButton)
+            self._error_msg_box.setModal(False)
+            self._error_msg_box.open()  # non bloquant
+
+            # Timer pour fermer automatiquement après 5 s
+            self._error_close_timer = QTimer(self)
+            self._error_close_timer.setSingleShot(True)
+            self._error_close_timer.timeout.connect(self._error_msg_box.accept)
+            self._error_close_timer.timeout.connect(self._error_close_timer.deleteLater)
+            self._error_close_timer.start(3000)
+
             return
-        print(f"Montant validé : {amount} €")
+
+        # Montant OK : passage à la page de paiement
         montant = float(amount)
         self.navigate_to_payment(montant)
 
-
     def return_to_previous_page(self):
         """Retourne à la page précédente et efface le montant saisi si non validé."""
-        self.amount_input.clear()  # Efface le champ de saisie
+        self.amount_input.clear()
         parent = self.parent()
         if parent:
-            parent.setCurrentIndex(0)  # Retour à la page précédente
+            parent.setCurrentIndex(0)
 
     def navigate_to_payment(self, montant):
         """Navigue vers la page de paiement et initie le paiement."""
-        self.amount_input.clear()  # Efface le champ de saisie
-
+        self.amount_input.clear()
         if self.payment_page:
             self.payment_page.set_amount(montant)
-            self.payment_page.initiate_payment(montant, self.donation_type)  # Appelle la méthode d'initiation de paiement avec le type de don
+            self.payment_page.initiate_payment(montant, self.donation_type)
             parent = self.parent()
             if parent:
                 parent.setCurrentIndex(2)
