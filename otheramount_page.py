@@ -215,28 +215,48 @@ class OtherAmountPage(QWidget):
             if not amount or float(amount) <= 0:
                 raise ValueError
         except ValueError:
-            # Création et stockage de la boîte de dialogue
+            error_message = self.translations.get(
+                self.current_language, {}
+            ).get("invalid_amount", "Veuillez entrer un montant valide.")
+
+            # 1) Création de la boîte de dialogue
             self._error_msg_box = QMessageBox(self)
-            self._error_msg_box.setWindowTitle(self.invalid_amount_title)
-            self._error_msg_box.setText(self.invalid_amount_message)
+            # 2) Flags pour enlever bordures et barre de titre, la passer en avant
+            self._error_msg_box.setWindowFlags(
+                Qt.Dialog
+                | Qt.FramelessWindowHint
+                | Qt.WindowStaysOnTopHint
+            )
+            # 3) Style CSS pour agrandir le texte
+            self._error_msg_box.setStyleSheet("""
+                QMessageBox {
+                    background-color: white;
+                }
+                QLabel {
+                    font-size: 48pt;
+                    qproperty-alignment: 'AlignCenter';
+                }
+            """)
+            self._error_msg_box.setText(error_message)
             self._error_msg_box.setIcon(QMessageBox.Warning)
             self._error_msg_box.setStandardButtons(QMessageBox.NoButton)
             self._error_msg_box.setModal(False)
-            self._error_msg_box.open()  # non bloquant
 
-            # Timer pour fermer automatiquement après 5 s
-            self._error_close_timer = QTimer(self)
+            # 4) Affichage en plein écran
+            self._error_msg_box.showFullScreen()
+
+            # 5) Timer parenté à la boîte pour la fermer après 5 s
+            self._error_close_timer = QTimer(self._error_msg_box)
             self._error_close_timer.setSingleShot(True)
             self._error_close_timer.timeout.connect(self._error_msg_box.accept)
             self._error_close_timer.timeout.connect(self._error_close_timer.deleteLater)
-            self._error_close_timer.start(3000)
+            self._error_close_timer.start(5000)
 
             return
 
-        # Montant OK : passage à la page de paiement
+        # Si le montant est valide, on continue…
         montant = float(amount)
         self.navigate_to_payment(montant)
-
     def return_to_previous_page(self):
         """Retourne à la page précédente et efface le montant saisi si non validé."""
         self.amount_input.clear()
