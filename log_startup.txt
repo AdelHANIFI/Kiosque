@@ -1512,3 +1512,14 @@ fatal: unable to access 'https://github.com/AdelHANIFI/Kiosque.git/': Could not 
   app.setAttribute(Qt.AA_EnableHighDpiScaling)
 /home/mosqueePau/Desktop/Kiosque/main.py:23: DeprecationWarning: Enum value 'Qt::ApplicationAttribute.AA_UseHighDpiPixmaps' is marked as deprecated, please check the documentation for more information.
   app.setAttribute(Qt.AA_UseHighDpiPixmaps)
+On branch main
+Your branch is ahead of 'origin/main' by 2 commits.
+  (use "git push" to publish your local commits)
+
+nothing to commit, working tree clean
+fatal: unable to access 'https://github.com/AdelHANIFI/Kiosque.git/': Could not resolve host: github.com
+fatal: unable to access 'https://github.com/AdelHANIFI/Kiosque.git/': Could not resolve host: github.com
+/home/mosqueePau/Desktop/Kiosque/main.py:22: DeprecationWarning: Enum value 'Qt::ApplicationAttribute.AA_EnableHighDpiScaling' is marked as deprecated, please check the documentation for more information.
+  app.setAttribute(Qt.AA_EnableHighDpiScaling)
+/home/mosqueePau/Desktop/Kiosque/main.py:23: DeprecationWarning: Enum value 'Qt::ApplicationAttribute.AA_UseHighDpiPixmaps' is marked as deprecated, please check the documentation for more information.
+  app.setAttribute(Qt.AA_UseHighDpiPixmaps)
