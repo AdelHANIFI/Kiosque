@@ -250,7 +250,7 @@ class OtherAmountPage(QWidget):
             self._error_close_timer.setSingleShot(True)
             self._error_close_timer.timeout.connect(self._error_msg_box.accept)
             self._error_close_timer.timeout.connect(self._error_close_timer.deleteLater)
-            self._error_close_timer.start(5000)
+            self._error_close_timer.start(3000)
 
             return
 
