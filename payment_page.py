@@ -126,6 +126,8 @@ class PaymentPage(QWidget):
                 self.checker_thread = TransactionChecker(self.API_KEY, self.initiated_time, self.amount)
                 self.checker_thread.transaction_found.connect(self.handle_transaction_result)
                 self.checker_thread.transaction_failed.connect(lambda: self.display_payment_status(False))
+              #  self.checker_thread.transaction_pending.connect(self.display_pending_message)
+
                 self.checker_thread.start()
             elif response.status_code == 422 and "A pending transaction already exists for this device" in response.text:
                 print("Un paiement est déjà en attente sur le terminal.")
